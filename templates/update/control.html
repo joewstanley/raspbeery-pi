@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/bm.ico" rel="icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Beverage Monitor - Dispenser Control Panel</title>
+    <style>
+        html {
+        	background-color: #f7f9fb;
+        	color: #5C6878; 
+        }
+        body {
+        	font-family: 'Quicksand', sans-serif;
+            color: #5C6878; 
+            display: table;
+            height: 100%;
+            margin: auto;
+            padding: 1%;
+        }
+        table {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7f9fb;
+            font-size: 18px;
+            height: 100%;
+        }
+        @font-face {
+            font-family: LemonMilk;
+            src: url('../static/font/LemonMilk.otf');
+        }
+        h1 {
+        	font-family: 'Quicksand', sans-serif;
+			font-size: 60px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: 200;
+			line-height: 15.4px;
+        	text-decoration: none;
+        	color: #8D9AA7;
+            text-align: center;
+        }
+        #brand {
+        	font-family: 'LemonMilk';
+			font-size: 40px;
+            margin-bottom: 20px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        .brand-centered {
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          width: 100%;
+          left: 0;
+          top: 0;
+        }
+        .brand-centered .navbar-brand {
+          display: flex;
+          align-items: center;
+        }
+        .navbar-toggle {
+            z-index: 1;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            display:none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 12px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #21A00E;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #f2f2f2;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(20px);
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
+        }
+
+        .slider {
+            border-radius: 16px;
+        }
+
+        .slider:before {
+            border-radius: 50%;
+        }
+        .table {
+            margin: 0px auto;
+            width: 60%;
+        }
+        .control-panel p {
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="header">Beverage Monitor</h1>
+        <br /><br />
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#monitor-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+              
+                <div class="brand-centered">
+                    <a class="navbar-brand" href="/home"><h1 id="brand">Raspbeery Pi</h1></a>
+                </div>
+              
+                <div id="monitor-nav" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="/update/beverage">Beverage Information</a></li>
+                        <li><a href="/update/control">Device Control</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/view/usage">Order Analysis</a></li>
+                        <li><a href="/update/system">System Information</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <br />
+        <div class="center-block control-panel">
+            <p class="lead">Device Control Panel</p>
+            <table class="table table-hover">
+                <tr>
+                    <th>Dispenser</th>
+                    <th>Online Status</th>
+                    <th>Description</th>
+                </tr>
+                <tr id="bev1-data">
+                    <td>Beverage 1</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" id="bev1-control">
+                            <div class="slider"></div>
+                        </label>
+                    </td>
+                    <td id="info1">-</td>
+                </tr>
+                <tr id="bev2-data">
+                    <td>Beverage 2</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" id="bev2-control">
+                            <div class="slider"></div>
+                        </label>
+                    </td>
+                    <td id="info2">-</td>
+                </tr>
+                <tr id="bev3-data">
+                    <td>Beverage 3</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" id="bev3-control">
+                            <div class="slider"></div>
+                        </label>
+                    </td>
+                    <td id="info3">-</td>
+                </tr>
+            </table>
+        </div>
+        
+        <br />
+
+    </div>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var loading = [false, false, false];
+        var online = [false, false, false];
+        
+        $(document).ready(function() {
+            $('#bev1-control').change(function() {
+                loading[0] = true;
+                update_description(0, online[0]);
+                $.ajax({
+                    method: 'POST',
+                    url: '/update/control',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'beverage': 0, 'state': this.checked})
+                });  
+            });
+            
+            $('#bev2-control').change(function() {
+                loading[1] = true;
+                update_description(1, online[1]);
+                $.ajax({
+                    method: 'POST',
+                    url: '/update/control',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'beverage': 1, 'state': this.checked})
+                });  
+            });
+            
+            $('#bev3-control').change(function() {
+                loading[2] = true;
+                update_description(2, online[2]);
+                $.ajax({
+                    method: 'POST',
+                    url: '/update/control',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'beverage': 2, 'state': this.checked})
+                });  
+            });
+        });
+        
+        function update_description(index, online) {
+            var description = '';
+            if (loading[index]) {
+                if (online) {
+                    description = 'Disconnecting...';
+                } else {
+                    description = 'Connecting...';
+                }
+            } else {
+                if (online) {
+                    description = 'Connected';
+                } else {
+                    description = 'Disconnected';
+                }
+            }
+            
+            $('#info' + (index + 1)).html(description);
+        }
+        
+        function update_descriptions() {
+            for (var i = 0 ; i < 3 ; i++) {
+                update_description(i, online[i]);
+            }
+        }
+        
+        function update_switches() {
+            for (var i = 0 ; i < 3 ; i++) {
+                if (!loading[i]) {
+                    $('#bev' + (i + 1) + '-control').prop('checked', online[i]);
+                }
+            }
+        }
+        
+        function get_beverage_info() {
+            $.get('/data/beverage').done(function(data) {
+                for (var i = 0 ; i < 3 ; i++) {
+                    if (!loading[i]) {
+                        online[i] = data[i]['online'];
+                    } else if (data[i]['online'] != online[i]) {
+                        loading[i] = false;
+                        online[i] = data[i]['online'];
+                    }
+                }
+                
+                update_descriptions();
+                update_switches();
+                
+                setTimeout(get_beverage_info, 1000);
+            });
+        }
+        
+        get_beverage_info();
+    </script>
+</body>
+</html>

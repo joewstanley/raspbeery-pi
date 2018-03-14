@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/bm.ico" rel="icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Beverage Monitor - Update Beverage Information</title>
+    <style>
+        html {
+        	background-color: #f7f9fb;
+        	color: #5C6878; 
+        }
+        body {
+        	font-family: 'Quicksand', sans-serif;
+            color: #5C6878; 
+            display: table;
+            height: 100%;
+            margin: auto;
+            padding: 1%;
+        }
+        table {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7f9fb;
+            font-size: 18px;
+            height: 100%;
+        }
+        @font-face {
+            font-family: LemonMilk;
+            src: url('../static/font/LemonMilk.otf');
+        }
+        h1 {
+        	font-family: 'Quicksand', sans-serif;
+			font-size: 60px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: 200;
+			line-height: 15.4px;
+        	text-decoration: none;
+        	color: #8D9AA7;
+            text-align: center;
+        }
+        #brand {
+        	font-family: 'LemonMilk';
+			font-size: 40px;
+            margin-bottom: 20px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        .brand-centered {
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          width: 100%;
+          left: 0;
+          top: 0;
+        }
+        .brand-centered .navbar-brand {
+          display: flex;
+          align-items: center;
+        }
+        .navbar-toggle {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="header">Beverage Monitor</h1>
+        <br /><br />
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#monitor-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+              
+                <div class="brand-centered">
+                    <a class="navbar-brand" href="../home"><h1 id="brand">Raspbeery Pi</h1></a>
+                </div>
+              
+                <div id="monitor-nav" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="/update/beverage">Beverage Information</a></li>
+                        <li><a href="/update/control">Device Control</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/view/usage">Order Analysis</a></li>
+                        <li><a href="/update/system">System Information</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <br />
+        <div class="input-group-lg center-block">
+            <p class="lead">Update Beverage Information</p>
+            <div class="btn-group btn-group-justified" role="group" aria-label="Dispenser Number">
+                <div class="btn-group" role="group">
+                    <button id="bev1" type="button" class="btn btn-default" onclick="set_beverage(0);">Beverage 1</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button id="bev2" type="button" class="btn btn-default" onclick="set_beverage(1);">Beverage 2</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button id="bev3" type="button" class="btn btn-default" onclick="set_beverage(2);">Beverage 3</button>
+                </div>
+            </div>
+            
+            <br />
+            
+            <form>
+                <div id="bev-name-div" class="form-group has-feedback">
+                    <label for="bev-name">Beverage Name</label>
+                    <input type="text" class="form-control" id="bev-name" placeholder="Name" onblur="validate_input(this.id)" />
+                    <span id="name-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="name-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-name" class="help-block hidden"></span>
+                </div>
+                <div id="bev-tap-div" class="form-group has-feedback">
+                    <label for="bev-tap">Amount in Tap</label>
+                    <input type="text" class="form-control" id="bev-tap" placeholder="Amount (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="tap-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="tap-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-tap" class="help-block hidden"></span>
+                </div>
+                <div id="bev-storage-div" class="form-group has-feedback">
+                    <label for="bev-storage">Amount in Storage</label>
+                    <input type="text" class="form-control" id="bev-storage" placeholder="Amount (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="storage-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="storage-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-storage" class="help-block hidden"></span>
+                </div>
+                <div id="bev-dispense-div" class="form-group has-feedback">
+                    <label for="bev-dispense">Average Daily Dispensed</label>
+                    <input type="text" class="form-control" id="bev-dispense" placeholder="Amount per Day (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="dispense-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="dispense-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-dispense" class="help-block hidden"></span>
+                </div>
+            </form>
+        </div>
+        
+        <br />
+        
+        <button type="button" id="submit" class="btn btn-default" onclick="submit_data();" disabled>Submit</button>
+        <button type="button" id="cancel" class="btn btn-default" onclick="window.location='/home';">Cancel</button>
+    </div>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var tap_size = -1;
+        var max_storage = -1;
+        var selected = -1;
+        
+        var field = ['', '', '', ''];
+        
+        var valid = [false, false, false, false];
+        var changed = [false, false, false, false];
+        
+        $.get('/data/system').done(function(data) {
+            tap_size = data['tap_size'];
+            max_storage = data['max_storage'];
+        });
+        
+        function set_beverage(index) {
+            selected = index;
+            
+            valid = [true, true, true, true];
+            changed = [false, false, false, false];
+            
+            for (var i = 0 ; i < 3 ; i++) {
+                if (i === selected) {
+                    $('#bev' + (i + 1)).addClass('active');
+                } else {
+                    $('#bev' + (i + 1)).removeClass('active');
+                }
+            }
+            
+            $('#help-block-name').html('');
+            $('#help-block-name').removeClass('show').addClass('hidden');
+            $('#name-success').removeClass('show').addClass('hidden');
+            $('#name-error').removeClass('show').addClass('hidden');
+            $('#bev-name-div').removeClass('has-error has-success');
+            
+            $('#help-block-tap').html('');
+            $('#help-block-tap').removeClass('show').addClass('hidden');
+            $('#tap-success').removeClass('show').addClass('hidden');
+            $('#tap-error').removeClass('show').addClass('hidden');
+            $('#bev-tap-div').removeClass('has-error has-success');
+            
+            $('#help-block-storage').html('');
+            $('#help-block-storage').removeClass('show').addClass('hidden');
+            $('#storage-success').removeClass('show').addClass('hidden');
+            $('#storage-error').removeClass('show').addClass('hidden');
+            $('#bev-storage-div').removeClass('has-error has-success');
+            
+            $('#help-block-dispense').html('');
+            $('#help-block-dispense').removeClass('show').addClass('hidden');
+            $('#dispense-success').removeClass('show').addClass('hidden');
+            $('#dispense-error').removeClass('show').addClass('hidden');
+            $('#bev-dispense-div').removeClass('has-error has-success');
+            
+            $.get('/data/beverage').done(function(data) {
+                field[0] = data[index]['name'];
+                field[1] = data[index]['tap'].toFixed(2);
+                field[2] = data[index]['storage'].toFixed(2);
+                field[3] = (data[index]['storage'] / data[index]['days_left']).toFixed(2);
+                
+                $('#bev-name').val(field[0]);
+                $('#bev-tap').val(field[1]);
+                $('#bev-storage').val(field[2]);
+                $('#bev-dispense').val(field[3]);
+                
+                update_submit();
+            });
+        }
+        
+        function validate_input(id) {
+            var str = $('#' + id).val();
+            if (id === 'bev-name') {
+                if (!str.trim()) {
+                    show_error(0, 'name', 'Beverage name cannot be empty.');
+                } else {
+                    show_success(0, 'name', str)
+                }
+            } else if (id === 'bev-tap') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(1, 'tap', 'Amount in tap cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(1, 'tap', 'Amount in tap must be a nonnegative number.');
+                } else if (num > tap_size) {
+                    show_error(1, 'tap', 'Amount in tap must be less than current tap size (' + tap_size.toFixed(2) + ' gal).');
+                } else {
+                    show_success(1, 'tap', str);
+                }
+            } else if (id === 'bev-storage') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(2, 'storage', 'Amount in storage cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(2, 'storage', 'Amount in storage must be a nonnegative number.');
+                } else if (num > max_storage) {
+                    show_error(2, 'storage', 'Amount in storage must be less than current maximum storage amount (' + max_storage.toFixed(2) + ' gal).');
+                } else {
+                    show_success(2, 'storage', str);
+                }
+            } else if (id === 'bev-dispense') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(3, 'dispense', 'Average daily dispensed cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(3, 'dispense', 'Average daily dispensed must be a nonnegative number.');
+                } else {
+                    show_success(3, 'dispense', str);
+                }
+            }
+            
+            update_submit();
+        }
+        
+        function show_success(index, id, str) {
+             if (str.toString() === field[index]) {
+                changed[index] = false;
+                $('#' + id + '-success').removeClass('show').addClass('hidden');
+                $('#' + id + '-error').removeClass('show').addClass('hidden');
+                $('#bev-' + id + '-div').removeClass('has-error has-success');
+            } else {
+                changed[index] = true;
+                $('#' + id + '-success').removeClass('hidden').addClass('show');
+                $('#' + id + '-error').removeClass('show').addClass('hidden');
+                $('#bev-' + id + '-div').removeClass('has-error').addClass('has-success');
+            }
+            valid[index] = true;
+            $('#help-block-' + id).html('');
+            $('#help-block-' + id).removeClass('show').addClass('hidden');
+        }
+        
+        function show_error(index, id, msg) {
+            valid[index] = false;
+            $('#help-block-' + id).html(msg);
+            $('#help-block-' + id).removeClass('hidden').addClass('show');
+            $('#' + id + '-success').removeClass('show').addClass('hidden');
+            $('#' + id + '-error').removeClass('hidden').addClass('show');
+            $('#bev-' + id + '-div').removeClass('has-success').addClass('has-error');
+        }
+        
+        function update_submit() {
+            if (can_submit()) {
+                $('#submit').prop('disabled', false);
+            } else {
+                $('#submit').prop('disabled', true);
+            }
+        }
+        
+        function can_submit() {
+            return (valid[0] && valid[1] && valid[2] && valid[3]) &&
+                   (changed[0] || changed[1] || changed[2] || changed[3]) &&
+                   (selected != -1);
+        }
+        
+        function submit_data() {
+            var data = [];
+            data[0] = $('#bev-name').val().toString();
+            data[1] = $('#bev-tap').val().toString();
+            data[2] = $('#bev-storage').val().toString();
+            data[3] = $('#bev-dispense').val().toString();
+            
+            for (var i = 0 ; i < 4 ; i++) {
+                if (!changed[i]) {
+                    data[i] = '';
+                }
+            }
+            
+            $.ajax({
+              method: 'POST',
+              url: '/update/beverage',
+              contentType: 'application/json',
+              data: JSON.stringify({'beverage': {'index': selected, 'name': data[0], 'tap': data[1], 'storage': data[2], 'average_dispensed': data[3]}})
+            }).done(function(data) {
+                window.location = '/home';
+            });
+        }
+    </script>
+</body>
+</html>

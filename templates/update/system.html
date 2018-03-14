@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/bm.ico" rel="icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Beverage Monitor - Update System Information</title>
+    <style>
+         html {
+        	background-color: #f7f9fb;
+        	color: #5C6878; 
+        }
+        body {
+        	font-family: 'Quicksand', sans-serif;
+            color: #5C6878; 
+            display: table;
+            height: 100%;
+            margin: auto;
+            padding: 1%;
+        }
+        table {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7f9fb;
+            font-size: 18px;
+            height: 100%;
+        }
+        @font-face {
+            font-family: LemonMilk;
+            src: url('../static/font/LemonMilk.otf');
+        }
+        h1 {
+        	font-family: 'Quicksand', sans-serif;
+			font-size: 60px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: 200;
+			line-height: 15.4px;
+        	text-decoration: none;
+        	color: #8D9AA7;
+            text-align: center;
+        }
+        #brand {
+        	font-family: 'LemonMilk';
+			font-size: 40px;
+            margin-bottom: 20px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        .brand-centered {
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          width: 100%;
+          left: 0;
+          top: 0;
+        }
+        .brand-centered .navbar-brand {
+          display: flex;
+          align-items: center;
+        }
+        .navbar-toggle {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="header">Beverage Monitor</h1>
+        <br /><br />
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#monitor-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+              
+                <div class="brand-centered">
+                    <a class="navbar-brand" href="/home"><h1 id="brand">Raspbeery Pi</h1></a>
+                </div>
+              
+                <div id="monitor-nav" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="/update/beverage">Beverage Information</a></li>
+                        <li><a href="/update/control">Device Control</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/view/usage">Order Analysis</a></li>
+                        <li><a href="/update/system">System Information</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <br />
+        <div class="input-group-lg center-block">
+            <p class="lead">Update System Information</p>
+            <form>
+                <div id="tap-size-div" class="form-group has-feedback">
+                    <label for="tap-size">Tap Size</label>
+                    <input type="text" class="form-control" id="tap-size" placeholder="Size of Keg (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="tap-size-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="tap-size-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-tap-size" class="help-block hidden"></span>
+                </div>
+                <div id="max-storage-div" class="form-group has-feedback">
+                    <label for="max-storage">Maximum Amount in Storage</label>
+                    <input type="text" class="form-control" id="max-storage" placeholder="Amount (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="max-storage-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="max-storage-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-max-storage" class="help-block hidden"></span>
+                </div>
+                <div id="order-amount-div" class="form-group has-feedback">
+                    <label for="order-amount">Order Amount</label>
+                    <input type="text" class="form-control" id="order-amount" placeholder="Amount (in gallons)" onblur="validate_input(this.id)" />
+                    <span id="order-amount-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="order-amount-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-order-amount" class="help-block hidden"></span>
+                </div>
+                <div id="order-days-div" class="form-group has-feedback">
+                    <label for="order-days">Order Shipment Time</label>
+                    <input type="text" class="form-control" id="order-days" placeholder="Number of Days" onblur="validate_input(this.id)" />
+                    <span id="order-days-success" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="order-days-error" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
+                    <span id="help-block-order-days" class="help-block hidden"></span>
+                </div>
+            </form>
+        </div>
+        <br />
+        <button type="button" id="submit" class="btn btn-default" onclick="submit_data();" disabled>Submit</button>
+        <button type="button" id="cancel" class="btn btn-default" onclick="window.location='/home';">Cancel</button>
+    </div>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        var min_tap_size = -1;
+        var min_storage_size = -1;
+        
+        var field = ['', '', '', ''];
+        
+        var valid = [false, false, false, false];
+        var changed = [false, false, false, false];
+        
+        $.get('/data/system').done(function(data) {
+            min_tap_size = data['min_tap_size'];
+            min_storage_size = data['min_storage_size'];
+            
+            field[0] = data['tap_size'].toFixed(2);
+            field[1] = data['max_storage'].toFixed(2);
+            field[2] = data['order_amount'].toFixed(2);
+            field[3] = data['days_to_order'].toFixed(2);
+            
+            $('#tap-size').val(field[0]);
+            $('#max-storage').val(field[1]);
+            $('#order-amount').val(field[2]);
+            $('#order-days').val(field[3]);
+            
+            valid = [true, true, true, true];
+        });
+
+        function validate_input(id) {
+            var str = $('#' + id).val();
+            if (id === 'tap-size') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(0, id, 'Tap size cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(0, id, 'Tap size must be a nonnegative number.');
+                } else if (num < min_tap_size) {
+                    show_error(0, id, 'Tap size cannot be less than the minimum allowed tap size (' + min_tap_size.toFixed(2) + ' gal).');
+                } else {
+                    show_success(0, id, str);
+                }
+            } else if (id === 'max-storage') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(1, id, 'Maximum amount in storage cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(1, id, 'Maximum amount in storage must be a nonnegative number.');
+                } else if (num < min_storage_size) {
+                    show_error(1, id, 'Maximum amount in storage cannot be less than the minimum allowed storage amount (' + min_storage_size.toFixed(2) + ' gal).');
+                } else {
+                    show_success(1, id, str);
+                }
+            } else if (id === 'order-amount') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(2, id, 'Order amount cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(2, id, 'Order amount must be a nonnegative number.');
+                } else {
+                    show_success(2, id, str);
+                }
+            } else if (id === 'order-days') {
+                var num = new Number(str);
+                if (!str.trim()) {
+                    show_error(3, id, 'Order shipment time cannot be empty.');
+                } else if (isNaN(num) || num < 0) {
+                    show_error(3, id, 'Order shipment time must be a nonnegative number.');
+                } else {
+                    show_success(3, id, str);
+                }
+            }
+            
+            update_submit();
+        }
+        
+        function show_success(index, id, str) {
+             if (str.toString() === field[index]) {
+                changed[index] = false;
+                $('#' + id + '-success').removeClass('show').addClass('hidden');
+                $('#' + id + '-error').removeClass('show').addClass('hidden');
+                $('#' + id + '-div').removeClass('has-error has-success');
+            } else {
+                changed[index] = true;
+                $('#' + id + '-success').removeClass('hidden').addClass('show');
+                $('#' + id + '-error').removeClass('show').addClass('hidden');
+                $('#' + id + '-div').removeClass('has-error').addClass('has-success');
+            }
+            valid[index] = true;
+            $('#help-block-' + id).html('');
+            $('#help-block-' + id).removeClass('show').addClass('hidden');
+        }
+        
+        function show_error(index, id, msg) {
+            valid[index] = false;
+            $('#help-block-' + id).html(msg);
+            $('#help-block-' + id).removeClass('hidden').addClass('show');
+            $('#' + id + '-success').removeClass('show').addClass('hidden');
+            $('#' + id + '-error').removeClass('hidden').addClass('show');
+            $('#' + id + '-div').removeClass('has-success').addClass('has-error');
+        }
+        
+        function update_submit() {
+            if (can_submit()) {
+                $('#submit').prop('disabled', false);
+            } else {
+                $('#submit').prop('disabled', true);
+            }
+        }
+        
+        function can_submit() {
+            return (valid[0] && valid[1] && valid[2] && valid[3]) &&
+                   (changed[0] || changed[1] || changed[2] || changed[3]);
+        }
+        
+        function submit_data() {
+            var data = [];
+            data[0] = $('#tap-size').val().toString();
+            data[1] = $('#max-storage').val().toString();
+            data[2] = $('#order-amount').val().toString();
+            data[3] = $('#order-days').val().toString();
+            
+            for (var i = 0 ; i < 4 ; i++) {
+                if (!changed[i]) {
+                    data[i] = '';
+                }
+            }
+            
+            $.ajax({
+              method: 'POST',
+              url: '/update/system',
+              contentType: 'application/json',
+              data: JSON.stringify({'system': {'tap_size': data[0], 'max_storage': data[1], 'order_amount': data[2], 'days_to_order': data[3]}})
+            }).done(function(data) {
+                window.location = '../home';
+            });
+        }
+    </script>
+</body>
+</html>

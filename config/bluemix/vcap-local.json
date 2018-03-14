@@ -1,0 +1,68 @@
+{
+    "iotf-service": [
+        {
+            "credentials": {
+                "iotCredentialsIdentifier": "a2g6k39sl6r5",
+                "mqtt_host": "n0newg.messaging.internetofthings.ibmcloud.com",
+                "mqtt_u_port": 1883,
+                "mqtt_s_port": 8883,
+                "http_host": "n0newg.internetofthings.ibmcloud.com",
+                "org": "n0newg",
+                "apiKey": "a-n0newg-yiakqtfyw0",
+                "apiToken": "s?RoUjijsMr8Ys+40L"
+            },
+            "syslog_drain_url": null,
+            "label": "iotf-service",
+            "provider": null,
+            "plan": "iotf-service-free",
+            "name": "iot-monitor",
+            "tags": [
+                "internet_of_things",
+                "Internet of Things",
+                "ibm_created",
+                "ibm_dedicated_public",
+                "lite"
+            ]
+        }
+    ],
+    "AvailabilityMonitoring": [
+        {
+            "credentials": {
+                "cred_url": "https://perfbroker.ng.bluemix.net",
+                "token": "myJL6tZJyGi4Gr6ciDJ2C+7DoWZYSk8kL0xk4VU7/d39EQGC3v107lmmcY1lA06v7r316u7nycKz8N9iHw5nHjMia4w9OQMJ3ysn2aMXyiY="
+            },
+            "syslog_drain_url": null,
+            "label": "AvailabilityMonitoring",
+            "provider": null,
+            "plan": "Lite",
+            "name": "availability-monitoring-auto",
+            "tags": [
+                "ibm_created",
+                "bluemix_extensions",
+                "dev_ops"
+            ]
+        }
+    ],
+    "cloudantNoSQLDB": [
+        {
+            "credentials": {
+                "username": "36c6043e-4a44-4b45-987c-409142a7fd2a-bluemix",
+                "password": "2227eb6eac4e22f70adfe39ce256cccdf10053cfe44cb5591f15f497ce196245",
+                "host": "36c6043e-4a44-4b45-987c-409142a7fd2a-bluemix.cloudant.com",
+                "port": 443,
+                "url": "https://36c6043e-4a44-4b45-987c-409142a7fd2a-bluemix:2227eb6eac4e22f70adfe39ce256cccdf10053cfe44cb5591f15f497ce196245@36c6043e-4a44-4b45-987c-409142a7fd2a-bluemix.cloudant.com"
+            },
+            "syslog_drain_url": null,
+            "label": "cloudantNoSQLDB",
+            "provider": null,
+            "plan": "Lite",
+            "name": "BeverageDB",
+            "tags": [
+                "data_management",
+                "ibm_created",
+                "lite",
+                "ibm_dedicated_public"
+            ]
+        }
+    ]
+}
